@@ -20,7 +20,7 @@
   async function renderDiary(){
     const logs=await logsForDate();const groups=groupLogs(logs);const html=Object.keys(groups).map(meal=>`<div class="meal-group"><div class="meal-group-title"><span>${esc(meal)}</span><span>${fmt(totals(groups[meal]).kcal)} kcal</span></div>${groups[meal].map(l=>`<div class="food-log-row"><div><strong>${esc(l.foodName)}</strong><small>${fmt(l.grams)} g · ${esc(l.state||"state not set")} · ${nutrientsText(l)}</small><small>${esc(l.confidence||"estimate")} · ${esc(l.source||"")}</small></div><div class="row-actions"><button class="delete-btn" data-delete-log="${esc(l.id)}" aria-label="Delete ${esc(l.foodName)}">×</button></div></div>`).join("")}</div>`).join("");
     const empty=logs.length===0?'<div class="empty-state">No foods logged for this date yet.</div>':html;
-    $("diaryMeals").innerHTML=empty;$("homeMeals").innerHTML=empty;$("diaryDateLabel").textContent=date;
+    $("diaryMeals").innerHTML=empty;$("homeMeals").innerHTML=empty;$("diaryDateLabel").textContent=dateNow();
     document.querySelectorAll("[data-delete-log]").forEach(btn=>btn.addEventListener("click",async()=>{await AOS_DB.remove("foodLogs",btn.dataset.deleteLog);await refresh();toast("Food entry deleted");}));
     const t=totals(logs),s=await getSettings(),tar=s.targets;
     $("caloriesTotal").textContent=fmt(t.kcal);$("proteinTotal").textContent=fmt(t.protein);$("carbsTotal").textContent=fmt(t.carbs);$("fatTotal").textContent=fmt(t.fat);$("fiberTotal").textContent=fmt(t.fiber);
