@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090a0c">
+  <meta name="application-name" content="FitOS">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="description" content="Offline-first personal fitness and nutrition tracker">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>FitOS — Fitness & Nutrition</title>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">YOUR PERSONAL FITNESS SYSTEM</div>
+      <div class="brand-lockup"><img src="icon.svg" alt="" width="40" height="40"><h1>Fit<span>OS</span></h1></div>
+    </div>
+    <button id="installBtn" class="ghost small hidden" type="button">Install app</button>
+  </header>
+
+  <main id="appMain">
+    <section id="home" class="screen active">
+      <div class="section-head">
+        <div><p class="eyebrow">TODAY</p><h2>Daily overview</h2></div>
+        <input id="activeDate" type="date" aria-label="Selected date">
+      </div>
+      <div class="grid summary-grid">
+        <article class="metric-card featured"><div class="metric-label">Calories</div><div class="metric-value"><span id="caloriesTotal">0</span><small>kcal</small></div><div class="progress"><span id="calorieProgress"></span></div><div class="metric-foot"><span id="calorieRemaining">0 kcal remaining</span><span id="calorieTargetLabel">Target 2100</span></div></article>
+        <article class="metric-card"><div class="metric-label">Protein</div><div class="metric-value"><span id="proteinTotal">0</span><small>g</small></div><div class="metric-foot"><span id="proteinRemaining">0 g remaining</span><span id="proteinTargetLabel">Target 160 g</span></div></article>
+        <article class="metric-card"><div class="metric-label">Carbs</div><div class="metric-value"><span id="carbsTotal">0</span><small>g</small></div><div class="metric-foot"><span id="carbsRemaining">0 g remaining</span><span id="carbsTargetLabel">Target 220 g</span></div></article>
+        <article class="metric-card"><div class="metric-label">Fat</div><div class="metric-value"><span id="fatTotal">0</span><small>g</small></div><div class="metric-foot"><span id="fatRemaining">0 g remaining</span><span id="fatTargetLabel">Target 60 g</span></div></article>
+        <article class="metric-card"><div class="metric-label">Fibre</div><div class="metric-value"><span id="fiberTotal">0</span><small>g</small></div><div class="metric-foot"><span id="fiberRemaining">0 g remaining</span><span id="fiberTargetLabel">Target 30 g</span></div></article>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Meals today</h3><button class="text-button" data-go="nutrition">+ Add food</button></div>
+        <div id="homeMeals" class="meal-list empty-state">No foods logged for this date yet.</div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Quick check-in</h3><span class="muted">Saved on this device</span></div>
+        <div class="form-grid">
+          <label>Weight (kg)<input id="weightInput" type="number" min="0" step="0.1" placeholder="e.g. 70.0"></label>
+          <label>Steps<input id="stepsInput" type="number" min="0" step="1" placeholder="e.g. 10000"></label>
+          <label>Water (ml)<input id="waterInput" type="number" min="0" step="50" placeholder="e.g. 2500"></label>
+          <button id="saveCheckin" class="primary">Save check-in</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="train" class="screen">
+      <div class="section-head"><div><p class="eyebrow">PERFORMANCE</p><h2>Train</h2></div></div>
+      <div class="panel">
+        <h3>Log a workout</h3>
+        <form id="workoutForm" class="form-grid">
+          <label>Workout name<input id="workoutName" required placeholder="e.g. Upper body"></label>
+          <label>Exercise<input id="exerciseName" required placeholder="e.g. Incline dumbbell press"></label>
+          <label>Sets<input id="exerciseSets" type="number" min="1" max="30" value="3" required></label>
+          <label>Reps per set<input id="exerciseReps" type="number" min="1" max="100" value="10" required></label>
+          <label>Weight (kg)<input id="exerciseWeight" type="number" min="0" step="0.25" value="0" required></label>
+          <label>Notes<input id="workoutNotes" placeholder="Optional"></label>
+          <button class="primary" type="submit">Save exercise</button>
+        </form>
+      </div>
+      <div class="panel"><div class="panel-head"><h3>Workout history</h3></div><div id="workoutHistory" class="empty-state">No workouts logged yet.</div></div>
+      <p class="note">Exercise entries are saved by date. Use consistent exercise names to compare your own past sets and loads. FitOS does not automatically prescribe training loads.</p>
+    </section>
+
+    <section id="nutrition" class="screen">
+      <div class="section-head"><div><p class="eyebrow">FOOD JOURNAL</p><h2>Nutrition</h2></div></div>
+      <div class="panel">
+        <h3>Quick entry</h3>
+        <p class="muted">Try: <em>2 boiled eggs, 200 g cooked rice, 150 g cooked chicken</em></p>
+        <label>Describe your meal<textarea id="naturalEntry" rows="3" placeholder="Enter multiple foods in ordinary language…"></textarea></label>
+        <div class="form-grid compact">
+          <label>Meal<select id="quickMeal"><option>Breakfast</option><option>Lunch</option><option>Snack</option><option>Dinner</option><option>Other</option></select></label>
+          <button id="parseEntry" class="primary">Parse entry</button>
+        </div>
+        <div id="parseResults" class="parse-results hidden"></div>
+      </div>
+      <div class="panel">
+        <h3>Search and add food</h3>
+        <label>Search food<input id="foodSearch" type="search" placeholder="Search idli, cooked rice, egg…"></label>
+        <p class="muted">Search English or Tamil names. Raw, dry, cooked and prepared entries are separate. Most values are estimates—brand labels and weighed edible portions are best.</p>
+        <div id="foodResults" class="food-results"></div>
+        <div id="selectedFoodForm" class="selected-food hidden">
+          <h4 id="selectedFoodName">Selected food</h4>
+          <p id="selectedFoodInfo" class="muted"></p>
+          <div class="form-grid compact">
+            <label>Amount (g)<input id="foodGrams" type="number" min="0.1" step="1" value="100"></label>
+            <label>Meal<select id="selectedMeal"><option>Breakfast</option><option>Lunch</option><option>Snack</option><option>Dinner</option><option>Other</option></select></label>
+            <button id="addFood" class="primary">Add to diary</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Missing a food?</h3><button id="toggleCustomFood" class="secondary small" type="button">+ Create food</button></div>
+        <p class="muted">Enter the nutrition label per 100 g, or use a clearly marked estimate. Custom foods stay on this device and are included in backups.</p>
+        <form id="customFoodForm" class="form-grid hidden">
+          <label>Food name<input id="customFoodName" required maxlength="80" placeholder="e.g. My protein paneer"></label>
+          <label>Category<select id="customFoodCategory"><option>Packaged foods</option><option>Prepared foods</option><option>Dairy</option><option>Grains</option><option>Protein</option><option>Fruit</option><option>Vegetables</option><option>Snacks</option><option>Supplements</option><option>Other</option></select></label>
+          <label>Food state<select id="customFoodState"><option value="as sold">As sold / label</option><option value="raw">Raw</option><option value="dry">Dry</option><option value="cooked">Cooked</option><option value="prepared">Prepared recipe</option></select></label>
+          <label>Calories / 100 g<input id="customKcal" required type="number" min="0" max="1000" step="0.1"></label>
+          <label>Protein (g / 100 g)<input id="customProtein" required type="number" min="0" max="100" step="0.1"></label>
+          <label>Carbs (g / 100 g)<input id="customCarbs" required type="number" min="0" max="100" step="0.1"></label>
+          <label>Fat (g / 100 g)<input id="customFat" required type="number" min="0" max="100" step="0.1"></label>
+          <label>Fibre (g / 100 g)<input id="customFiber" required type="number" min="0" max="100" step="0.1" value="0"></label>
+          <label>Data source<select id="customFoodSource"><option value="Package nutrition label">Package nutrition label</option><option value="Recipe calculation">Recipe calculation</option><option value="Manual estimate">Manual estimate</option></select></label>
+          <label class="full-width">Aliases (optional)<input id="customFoodAliases" placeholder="comma separated, e.g. brand name, Tamil name"></label>
+          <button class="primary" type="submit">Save custom food</button>
+        </form>
+      </div>
+      <div class="panel">
+        <h3>Build your own recipe</h3>
+        <p class="muted">Add ingredient amounts, then enter the final cooked weight. FitOS calculates nutrition per 100 g of the finished recipe. The result remains an estimate if ingredient values are estimates.</p>
+        <label>Find ingredient<input id="recipeIngredientSearch" type="search" placeholder="Search cooked rice, chicken, oil…"></label>
+        <div id="recipeIngredientResults" class="food-results"></div>
+        <div id="recipeIngredientSelected" class="selected-food hidden">
+          <h4 id="recipeIngredientName">Selected ingredient</h4>
+          <p id="recipeIngredientInfo" class="muted"></p>
+          <div class="form-grid compact">
+            <label>Ingredient amount (g)<input id="recipeIngredientGrams" type="number" min="0.1" step="1" value="100"></label>
+            <button id="addRecipeIngredient" class="primary" type="button">Add ingredient</button>
+          </div>
+        </div>
+        <div id="recipeDraftList" class="recipe-draft-list"><div class="empty-state">Add ingredients to start a recipe.</div></div>
+        <form id="recipeSaveForm" class="form-grid">
+          <label>Recipe name<input id="recipeName" required maxlength="80" placeholder="e.g. Homemade chicken biryani"></label>
+          <label>Final cooked weight (g)<input id="recipeFinalWeight" required type="number" min="1" step="1" placeholder="e.g. 850"></label>
+          <button class="primary" type="submit">Calculate & save recipe</button>
+        </form>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Saved day templates</h3><button id="saveMealTemplate" class="secondary small" type="button">Save selected day</button></div>
+        <p class="muted">Save the selected day’s food entries and add them again later. Portions and recorded nutrient values are copied, not recalculated.</p>
+        <div id="savedMealsList" class="saved-meals-list"><div class="empty-state">No saved meals yet.</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Selected day diary</h3><span class="muted" id="diaryDateLabel"></span></div>
+        <div id="diaryMeals" class="meal-list empty-state">No foods logged for this date yet.</div>
+      </div>
+    </section>
+
+    <section id="progress" class="screen">
+      <div class="section-head"><div><p class="eyebrow">LONG-TERM RECORD</p><h2>Progress</h2></div></div>
+      <div class="panel">
+        <h3>Body measurement entry</h3>
+        <form id="measurementForm" class="form-grid">
+          <label>Weight (kg)<input id="measureWeight" type="number" min="0" step="0.1"></label>
+          <label>Waist (cm)<input id="measureWaist" type="number" min="0" step="0.1"></label>
+          <label>Chest (cm)<input id="measureChest" type="number" min="0" step="0.1"></label>
+          <label>Arm (cm)<input id="measureArm" type="number" min="0" step="0.1"></label>
+          <label>Hips (cm)<input id="measureHips" type="number" min="0" step="0.1"></label>
+          <label>Notes<input id="measureNotes" placeholder="Optional"></label>
+          <button class="primary" type="submit">Save measurements</button>
+        </form>
+      </div>
+      <div class="panel"><div class="panel-head"><h3>Measurement history</h3></div><div id="measurementHistory" class="empty-state">No measurements logged yet.</div></div>
+      <div class="panel">
+        <h3>Progress trends</h3>
+        <p class="muted">Trends use the measurements you log. At least two dated values are needed for a line.</p>
+        <div id="progressTrends" class="trend-grid"><div class="empty-state">Add measurements on different dates to see a trend.</div></div>
+      </div>
+      <div class="panel">
+        <h3>Supplement / medication log</h3>
+        <p class="muted">Optional personal record only—not a medication recommendation or reminder. Enter only what you actually took; follow your clinician's directions.</p>
+        <form id="supplementForm" class="form-grid">
+          <label>Name<input id="supplementName" required maxlength="100" placeholder="e.g. Vitamin D3"></label>
+          <label>Dose amount<input id="supplementDose" type="number" min="0" step="any" placeholder="e.g. 2000"></label>
+          <label>Unit<select id="supplementUnit"><option>mg</option><option>mcg</option><option>IU</option><option>g</option><option>ml</option><option>tablet</option><option>capsule</option><option>scoop</option><option>other</option></select></label>
+          <label>Timing<select id="supplementTiming"><option>Morning</option><option>With breakfast</option><option>With lunch</option><option>With dinner</option><option>Bedtime</option><option>Other</option></select></label>
+          <label class="full-width">Notes (optional)<input id="supplementNotes" maxlength="240" placeholder="Optional note; no medical advice is generated"></label>
+          <button class="primary" type="submit">Save log</button>
+        </form>
+        <div id="supplementHistory" class="saved-meals-list"><div class="empty-state">No supplement or medication entries logged.</div></div>
+      </div>
+      <div class="panel">
+        <h3>Manual recovery log</h3>
+        <form id="recoveryForm" class="form-grid">
+          <label>Sleep (hours)<input id="sleepHours" type="number" min="0" max="24" step="0.25"></label>
+          <label>Energy (1–5)<select id="energyLevel"><option value="">Not set</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+          <label>Soreness (1–5)<select id="sorenessLevel"><option value="">Not set</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+          <label>Stress (1–5)<select id="stressLevel"><option value="">Not set</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+          <button class="primary" type="submit">Save recovery</button>
+        </form>
+        <div id="recoveryHistory" class="saved-meals-list"><div class="empty-state">No recovery entries yet.</div></div>
+      </div>
+    </section>
+
+    <section id="coach" class="screen">
+      <div class="section-head"><div><p class="eyebrow">LOCAL INSIGHTS</p><h2>Coach & settings</h2></div></div>
+      <div class="panel">
+        <h3>Profile and daily targets</h3>
+        <form id="settingsForm" class="form-grid">
+          <label>Height (cm)<input id="profileHeight" type="number" min="50" max="250" step="0.1"></label>
+          <label>Starting weight (kg)<input id="profileWeight" type="number" min="20" max="400" step="0.1"></label>
+          <label>Calorie target (kcal)<input id="targetCalories" type="number" min="0" step="10"></label>
+          <label>Protein target (g)<input id="targetProtein" type="number" min="0" step="1"></label>
+          <label>Carbohydrate target (g)<input id="targetCarbs" type="number" min="0" step="1"></label>
+          <label>Fat target (g)<input id="targetFat" type="number" min="0" step="1"></label>
+          <label>Fibre target (g)<input id="targetFiber" type="number" min="0" step="1"></label>
+          <button class="primary" type="submit">Save profile and targets</button>
+        </form>
+      </div>
+      <div class="panel"><h3>Today's rule-based assessment</h3><div id="coachAssessment" class="assessment">Log food to see an assessment based on your selected targets.</div></div>
+      <div class="panel">
+        <h3>Backup & restore</h3>
+        <p class="muted">Your records are stored locally in this browser on this device. Export backups regularly, especially before clearing browser data or moving phones.</p>
+        <div class="button-row">
+          <button id="exportJson" class="primary">Download JSON backup</button>
+          <button id="exportCsv" class="secondary">Export food log CSV</button>
+          <button id="exportAllCsv" class="secondary">Export all-records CSV</button>
+        </div>
+        <label class="file-label">Restore JSON backup<input id="importJson" type="file" accept="application/json,.json"></label>
+        <p id="backupStatus" class="muted" role="status"></p>
+      </div>
+      <div class="panel">
+        <h3>Data and limitations</h3>
+        <ul class="plain-list">
+          <li>No account, analytics SDK, ad SDK or external nutrition API.</li>
+          <li>Food database values marked estimate/low are approximate. Restaurant recipes and raw-versus-cooked weights can differ substantially.</li>
+          <li>Reference sources for future verified expansion include ICMR-NIN Indian Food Composition Tables 2017 and USDA FoodData Central. The included starter values are not a verified bulk import of either database.</li>
+          <li>Offline app-shell support requires serving the app from localhost or HTTPS; opening index.html as a file does not enable service workers.</li>
+          <li>Browser storage can be cleared by the operating system/browser. JSON backups are essential for long-term ownership.</li>
+          <li>This PWA is not a native APK. It can be installed through a supported browser when hosted on HTTPS.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Primary navigation">
+    <button class="nav-item active" data-screen="home"><span>⌂</span><small>Home</small></button>
+    <button class="nav-item" data-screen="train"><span>↗</span><small>Train</small></button>
+    <button class="nav-item" data-screen="nutrition"><span>◉</span><small>Food</small></button>
+    <button class="nav-item" data-screen="progress"><span>⌁</span><small>Progress</small></button>
+    <button class="nav-item" data-screen="coach"><span>✳</span><small>Coach</small></button>
+  </nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="foods.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

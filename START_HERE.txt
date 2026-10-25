@@ -1,0 +1,38 @@
+FITOS — START HERE
+
+This ZIP contains your FitOS fitness and nutrition app.
+You do not need to edit any code to use the app.
+
+WHAT IT DOES
+- Tracks food amounts and daily calories, protein, carbs, fat and fibre.
+- Searches 122 common Indian/Tamil food entries, including separate raw/cooked options where available.
+- Lets you add custom foods using a package nutrition label and calculate your own recipes from ingredients and final cooked weight.
+- Saves a day's food entries as a reusable template.
+- Logs workouts, body measurements, steps, water, recovery, and supplements/medications you choose to record.
+- Makes JSON backups and CSV exports.
+- Uses black-and-white styling and an icon with no letters.
+- Keeps your records in the browser on your phone; it does not sync to the cloud.
+
+IMPORTANT ABOUT YOUR DATA
+Please download a JSON backup regularly. If you clear browser/site data or switch phones, records can be lost unless you restore a backup.
+
+HOW TO PUT FITOS ON YOUR ANDROID HOME SCREEN
+FitOS needs an HTTPS website for dependable installation and offline caching. One free option is GitHub Pages:
+
+1. Extract this ZIP on a computer, or keep the folder ready to upload.
+2. Sign in to GitHub and create a new empty repository named fitos.
+3. Open the repository and choose Add file → Upload files.
+4. Upload the CONTENTS of the extracted fitos_v0.4 folder (index.html, app.js, styles.css and all other files) into the repository root. Do not upload only the ZIP.
+5. Commit the uploaded files.
+6. Open the repository Settings → Pages. Set the publishing source to Deploy from a branch, select the main branch and /(root), then save.
+7. When GitHub Pages shows the published HTTPS link, open that link on your Android phone in Chrome or Brave.
+8. Open the browser menu and tap Install app or Add to Home screen.
+9. Open FitOS once while online. Then you can test it with the internet turned off.
+
+If you don't want to use GitHub Pages, any static host that provides HTTPS can serve these files.
+
+TESTING
+The folder includes tests.html. After the files are served on a computer at localhost or HTTPS, open tests.html?autorun=1 to run the built-in checks. Actual phone installation should also be tested on your Android device.
+
+FOOD ACCURACY
+Many food values are estimates, especially restaurant meals and recipes. Pick the correct raw/dry/cooked state and enter the edible portion you actually ate. For packaged whey, paneer, chocolate, protein bars and branded foods, use the exact nutrition label to create a custom food.

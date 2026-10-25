@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="112" fill="#090a0c"/>
+<rect x="15" y="15" width="482" height="482" rx="101" fill="none" stroke="#292b30" stroke-width="3"/>
+<!-- dumbbell -->
+<g fill="#f4f4f5">
+  <rect x="143" y="144" width="226" height="24" rx="12"/>
+  <rect x="119" y="124" width="38" height="64" rx="12"/>
+  <rect x="355" y="124" width="38" height="64" rx="12"/>
+  <rect x="93" y="135" width="24" height="42" rx="8"/>
+  <rect x="395" y="135" width="24" height="42" rx="8"/>
+</g>
+<!-- bowl rim and bowl body -->
+<path d="M128 254 Q256 286 384 254" fill="none" stroke="#f4f4f5" stroke-width="17" stroke-linecap="round"/>
+<path d="M145 275 Q159 367 256 373 Q353 367 367 275" fill="none" stroke="#f4f4f5" stroke-width="19" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M194 405 H318" fill="none" stroke="#f4f4f5" stroke-width="18" stroke-linecap="round"/>
+<!-- three small food forms inside bowl, abstract and deliberately not leaf-shaped -->
+<g fill="#f4f4f5"><circle cx="218" cy="309" r="13"/><circle cx="256" cy="327" r="15"/><circle cx="294" cy="306" r="12"/></g>
+</svg>
