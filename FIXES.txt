@@ -1,0 +1,6 @@
+FitOS corrected package
+1. Fixed the diary date label crash by using dateNow() instead of an undefined variable.
+2. Replaced the visible app logo and PWA PNG icons with the selected black-and-white athletic silhouette image.
+3. Bumped the service worker cache version to v4 so the updated files can be fetched.
+
+Upload these files to the root of your existing GitHub repository and replace files with the same names. Then wait for Pages to redeploy and reload the site. If an installed app still shows the old icon, remove the old home-screen shortcut and add it again after confirming the website icon is updated.
